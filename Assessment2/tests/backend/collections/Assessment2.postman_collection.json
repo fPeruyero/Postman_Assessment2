@@ -1,0 +1,910 @@
+{
+	"info": {
+		"_postman_id": "94b97d36-3e26-472a-bcd1-7e091b8c1317",
+		"name": "Assessment2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "PROJECT",
+			"item": [
+				{
+					"name": "CREATE",
+					"item": [
+						{
+							"name": "Create a New Project",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = pm.response.json();\r",
+											"\r",
+											"var name = pm.environment.get(\"projectName\");\r",
+											"pm.test(\"Project name is correct\", function () {\r",
+											"  pm.expect(jsonData.name).to.eql(name);\r",
+											"});\r",
+											"\r",
+											"const schema = {\r",
+											"    \"id\": 2203306141,\r",
+											"    \"name\": \"Shopping List\",\r",
+											"    \"comment_count\": 0,\r",
+											"    \"color\": 47,\r",
+											"    \"shared\": false,\r",
+											"    \"sync_id\": 0,\r",
+											"    \"order\": 1,\r",
+											"    \"favorite\": true,\r",
+											"    \"url\": \"https://todoist.com/showProject?id=2203306141\"\r",
+											"};\r",
+											"\r",
+											"pm.test(\"Validate schema\", () => {\r",
+											"    pm.response.to.have.jsonSchema(schema);\r",
+											"});\r",
+											"\r",
+											"pm.environment.set(\"projectID\", jsonData.id);\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set(\"scenario\", true);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "X-Requested-Id",
+										"value": "$(uuidgen)",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"{{projectName}}\"\r\n}"
+								},
+								"url": {
+									"raw": "{{BaseURL}}{{projects}}",
+									"host": [
+										"{{BaseURL}}{{projects}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "TASK",
+			"item": [
+				{
+					"name": "CREATE",
+					"item": [
+						{
+							"name": "Create a New Task",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = pm.response.json();\r",
+											"\r",
+											"pm.environment.set(\"taskContent\", jsonData.content);\r",
+											"\r",
+											"var content = pm.environment.get(\"taskContent\");\r",
+											"pm.test(\"Task content is correct\", function () {\r",
+											"  pm.expect(jsonData.content).to.eql(content);\r",
+											"});\r",
+											"\r",
+											"const schema = {\r",
+											"    \"comment_count\": 0,\r",
+											"    \"completed\": false,\r",
+											"    \"content\": \"Buy Milk\",\r",
+											"    \"due\": {\r",
+											"        \"date\": \"2016-09-01\",\r",
+											"        \"datetime\": \"2016-09-01T11:00:00Z\",\r",
+											"        \"string\": \"2017-07-01 12:00\",\r",
+											"        \"timezone\": \"Europe/Lisbon\"\r",
+											"    },\r",
+											"    \"id\": 2995104339,\r",
+											"    \"order\": 1,\r",
+											"    \"priority\": 4,\r",
+											"    \"project_id\": 2203306141,\r",
+											"    \"section_id\": 7025,\r",
+											"    \"parent_id\": 2995104589,\r",
+											"    \"url\": \"https://todoist.com/showTask?id=2995104339\"\r",
+											"};\r",
+											"\r",
+											"pm.test(\"Validate schema\", () => {\r",
+											"    pm.response.to.have.jsonSchema(schema);\r",
+											"});\r",
+											"\r",
+											"pm.environment.set(\"taskID\", jsonData.id);"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set(\"scenario\", true);\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "X-Requested-Id",
+										"value": "$(uuidgen)",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"content\": \"{{taskContent}}\",\r\n    \"project_id\": {{projectID}}\r\n}"
+								},
+								"url": {
+									"raw": "{{BaseURL}}{{tasks}}",
+									"host": [
+										"{{BaseURL}}{{tasks}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create a New Task with invalid date",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set(\"scenario\", false);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "X-Requested-Id",
+										"value": "$(uuidgen)",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"content\": \"{{taskContent}}\",\r\n    \"project_id\": {{projectID}},\r\n}"
+								},
+								"url": {
+									"raw": "{{BaseURL}}{{tasks}}",
+									"host": [
+										"{{BaseURL}}{{tasks}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "GET",
+					"item": [
+						{
+							"name": "GET An Active Task",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = pm.response.json();\r",
+											"\r",
+											"pm.test(\"Task is active (not completed)\", function () {\r",
+											"  pm.expect(jsonData.completed).to.eql(false);\r",
+											"});\r",
+											"var id = pm.environment.get(\"taskID\");\r",
+											"pm.test(\"Task is correct\", function () {\r",
+											"  pm.expect(jsonData.id).to.eql(id);\r",
+											"});\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set(\"scenario\", true);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BaseURL}}{{tasks}}/{{taskID}}?project_id={{projectID}}&id={{taskID}}",
+									"host": [
+										"{{BaseURL}}{{tasks}}"
+									],
+									"path": [
+										"{{taskID}}"
+									],
+									"query": [
+										{
+											"key": "project_id",
+											"value": "{{projectID}}"
+										},
+										{
+											"key": "id",
+											"value": "{{taskID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET An Active Task with non existent content",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set(\"scenario\",false);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BaseURL}}{{tasks}}/{{taskID}}?project_id={{projectID}}&id={{taskID}}&content=task",
+									"host": [
+										"{{BaseURL}}{{tasks}}"
+									],
+									"path": [
+										"{{taskID}}"
+									],
+									"query": [
+										{
+											"key": "project_id",
+											"value": "{{projectID}}"
+										},
+										{
+											"key": "id",
+											"value": "{{taskID}}"
+										},
+										{
+											"key": "content",
+											"value": "task"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET Active Tasks",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set(\"scenario\", true);"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = pm.response.json();\r",
+											"\r",
+											"var items = pm.response.json().length;\r",
+											"\r",
+											"for (i = 0; i < items; i++){\r",
+											"    pm.test(\"Task \"+i+\" is active\", function () {\r",
+											"        pm.expect(jsonData[i].completed).to.eql(false);\r",
+											"    })\r",
+											"};\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{BaseURL}}{{tasks}}?project_id={{projectID}}",
+									"host": [
+										"{{BaseURL}}{{tasks}}"
+									],
+									"query": [
+										{
+											"key": "project_id",
+											"value": "{{projectID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GET Active Tasks with invalid ids",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set(\"scenario\", false);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "content",
+										"value": "Task",
+										"type": "text"
+									},
+									{
+										"key": "",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{BaseURL}}{{tasks}}?project_id={{projectID}}&ids=[1,2,3,4,5]",
+									"host": [
+										"{{BaseURL}}{{tasks}}"
+									],
+									"query": [
+										{
+											"key": "project_id",
+											"value": "{{projectID}}"
+										},
+										{
+											"key": "ids",
+											"value": "[1,2,3,4,5]"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									" const schema = {",
+									"    \"assignee\": 2671142,",
+									"    \"assigner\": 2671362,",
+									"    \"comment_count\": 0,",
+									"    \"completed\": false,",
+									"    \"content\": \"Buy Milk\",",
+									"    \"due\": {",
+									"        \"date\": \"2016-09-01\",",
+									"        \"datetime\": \"2016-09-01T11:00:00Z\",",
+									"        \"string\": \"2017-07-01 12:00\",",
+									"        \"timezone\": \"Europe/Lisbon\"",
+									"    },",
+									"    \"id\": 2995104339,",
+									"    \"order\": 1,",
+									"    \"priority\": 1,",
+									"    \"project_id\": 2203306141,",
+									"    \"section_id\": 7025,",
+									"    \"parent_id\": 2995104589,",
+									"    \"url\": \"https://todoist.com/showTask?id=2995104339\"",
+									"};",
+									"",
+									"if ((pm.collectionVariables.get(\"scenario\")) == true){",
+									"    pm.test(\"Validate schema\", () => {",
+									"        pm.response.to.have.jsonSchema(schema);",
+									"    });",
+									"}",
+									"",
+									"if ((pm.collectionVariables.get(\"scenario\")) == false){",
+									"    pm.test('Verify Response Text = Bad Request',()=>{",
+									"   pm.expect(pm.response.text()).to.equal('Bad Request\\n');",
+									"})",
+									"}",
+									""
+								]
+							}
+						}
+					]
+				},
+				{
+					"name": "UPDATE",
+					"item": [
+						{
+							"name": "Update Task",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set(\"scenario\", true);"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "X-Requested-Id",
+										"value": "$(uuidgen)",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"content\": \"This is a task update\"\r\n}"
+								},
+								"url": {
+									"raw": "{{BaseURL}}{{tasks}}/{{taskID}}",
+									"host": [
+										"{{BaseURL}}{{tasks}}"
+									],
+									"path": [
+										"{{taskID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update task with invalid priority",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Verify Response Text = Unsupported priority value',()=>{\r",
+											"   pm.expect(pm.response.text()).to.equal('Unsupported priority value\\n');\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set(\"scenario\", false);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "X-Requested-Id",
+										"value": "$(uuidgen)",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"priority\": 10\r\n}"
+								},
+								"url": {
+									"raw": "{{BaseURL}}{{tasks}}/{{taskID}}",
+									"host": [
+										"{{BaseURL}}{{tasks}}"
+									],
+									"path": [
+										"{{taskID}}"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "COMPLETE",
+					"item": [
+						{
+							"name": "Complete Task",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set(\"scenario\", true);"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{BaseURL}}{{tasks}}/{{taskID}}/close",
+									"host": [
+										"{{BaseURL}}{{tasks}}"
+									],
+									"path": [
+										"{{taskID}}",
+										"close"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Complete Task with no auth",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set(\"scenario\", false);"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Verify Response Text = Empty token',()=>{\r",
+											"   pm.expect(pm.response.text()).to.equal('Empty token\\n');\r",
+											"})\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{BaseURL}}{{tasks}}/{{taskID}}/close",
+									"host": [
+										"{{BaseURL}}{{tasks}}"
+									],
+									"path": [
+										"{{taskID}}",
+										"close"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "REOPEN",
+					"item": [
+						{
+							"name": "Reopen task",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set(\"scenario\", true);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{BaseURL}}{{tasks}}/{{taskID}}/reopen",
+									"host": [
+										"{{BaseURL}}{{tasks}}"
+									],
+									"path": [
+										"{{taskID}}",
+										"reopen"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Reopen an active task with fake ID",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set(\"scenario\", false);\r",
+											"\r",
+											""
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											" pm.test('Verify Response Text = Not found',()=>{\r",
+											"   pm.expect(pm.response.text()).to.equal('Item not found\\n');\r",
+											" })"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{BaseURL}}{{tasks}}/{{fakeID}}/reopen",
+									"host": [
+										"{{BaseURL}}{{tasks}}"
+									],
+									"path": [
+										"{{fakeID}}",
+										"reopen"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "DELETE",
+					"item": [
+						{
+							"name": "Delete a task",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set(\"scenario\", true);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{BaseURL}}{{tasks}}/{{taskID}}",
+									"host": [
+										"{{BaseURL}}{{tasks}}"
+									],
+									"path": [
+										"{{taskID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete an inexistent tast",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('Verify Response Text = Not found',()=>{\r",
+											"   pm.expect(pm.response.text()).to.equal('Item not found\\n');\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set(\"scenario\", false);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{BaseURL}}{{tasks}}/12345",
+									"host": [
+										"{{BaseURL}}{{tasks}}"
+									],
+									"path": [
+										"12345"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"pm.test(\"Response time is less than 1000ms\", function () {",
+					"    pm.expect(pm.response.responseTime).to.be.below(1000);",
+					"});",
+					"",
+					"if ((pm.collectionVariables.get(\"scenario\")) == true){",
+					"    pm.test(\"Status code is 2xx\", function () {",
+					"        pm.response.to.be.success;",
+					"    });",
+					"}",
+					"",
+					"if ((pm.collectionVariables.get(\"scenario\")) == false){",
+					"    pm.test(\"Verify Reponse Status is not 2XX\", function() {",
+					"        pm.response.to.not.have.status(\"2xx\");",
+					"    });",
+					"    pm.test('Verify Response Format',()=>{",
+					"        pm.response.to.be.not.json;",
+					"        pm.expect(pm.response.text()).to.be.a('string');",
+					"    });",
+					"}"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "scenario",
+			"value": ""
+		}
+	]
+}

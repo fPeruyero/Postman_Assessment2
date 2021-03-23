@@ -1,0 +1,15 @@
+{
+  "name": "assessment2",
+  "version": "1.0.0",
+  "description": "commands integration",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx newman run ./Assessment2/tests/backend/collections/Assessment2.postman_collection.json -e ./Assessment2/tests/backend/enVariables/QA.postman_environment.json --iteration-data csvFile.csv -r htmlextra --reporter-htmlextra-export ./Assessment2/tests/backend/reports/report.html"
+  },
+  "author": "Fernanda Peruyero",
+  "license": "ISC",
+  "dependencies": {
+    "newman": "^5.2.2",
+    "newman-reporter-htmlextra": "^1.20.1"
+  }
+}
