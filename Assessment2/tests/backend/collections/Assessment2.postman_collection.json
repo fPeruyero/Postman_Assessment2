@@ -9,7 +9,7 @@
 			"name": "PROJECT",
 			"item": [
 				{
-					"name": "CREATE",
+					"name": "PCREATE",
 					"item": [
 						{
 							"name": "Create a New Project",
@@ -92,7 +92,7 @@
 			"name": "TASK",
 			"item": [
 				{
-					"name": "CREATE",
+					"name": "TCREATE",
 					"item": [
 						{
 							"name": "Create a New Task",
