@@ -4,8 +4,8 @@
   "description": "commands integration",
   "main": "index.js",
   "scripts": {
-    "report_test": "npx newman run ./Assessment2/tests/backend/collections/Assessment2.postman_collection.json -e ./Assessment2/tests/backend/enVariables/QA.postman_environment.json -r htmlextra --reporter-htmlextra-export ./Assessment2/tests/backend/reports/report.html",
-    "csv_test": "npx newman run ./Assessment2/tests/backend/collections/Assessment2.postman_collection.json -e ./Assessment2/tests/backend/enVariables/QA.postman_environment.json --folder TCREATE --iteration-data csvFile.csv "
+    "report_test": "npx newman run ./Assessment2/tests/backend/collections/Assessment2.postman_collection.json -e ./Assessment2/tests/backend/enVariables/QA.postman_environment.json -d keys.json -r htmlextra --reporter-htmlextra-export ./Assessment2/tests/backend/reports/report.html",
+    "csv_test": "npx newman run ./Assessment2/tests/backend/collections/Assessment2.postman_collection.json -e ./Assessment2/tests/backend/enVariables/QA.postman_environment.json --folder TCREATE -d keys.json --iteration-data csvFile.csv "
 
   },
   "author": "Fernanda Peruyero",
